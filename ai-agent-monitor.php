@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       AI Agent Monitor
- * Plugin URI:        https://github.com/roxnor/wp-ai-agent-monitor
+ * Plugin URI:        https://github.com/wp-shark/ai-agent-monitor
  * Description:       AI observability for WordPress. See what AI agents do inside your site — in real time.
  * Version:           0.1.0
  * Requires at least: 6.7
