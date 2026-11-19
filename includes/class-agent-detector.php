@@ -34,8 +34,10 @@ class Agent_Detector {
 
 	/**
 	 * Ability currently being executed, if any.
+	 *
+	 * @var string
 	 */
-	private static string $current_ability = '';
+	private static $current_ability = '';
 
 	/**
 	 * User-agent fragments that identify a known AI client.
@@ -173,7 +175,7 @@ class Agent_Detector {
 		}
 
 		foreach ( self::KNOWN_CLIENTS as $needle => $label ) {
-			if ( str_contains( $user_agent, $needle ) ) {
+			if ( false !== strpos( $user_agent, $needle ) ) {
 				return $label;
 			}
 		}

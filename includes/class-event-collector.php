@@ -27,7 +27,7 @@ class Event_Collector {
 	 *
 	 * @var array<int, array<string, mixed>>
 	 */
-	private array $pending = array();
+	private $pending = array();
 
 	/**
 	 * Meta keys and option fragments whose values are never stored.
@@ -703,7 +703,7 @@ class Event_Collector {
 		$key = strtolower( $key );
 
 		foreach ( self::REDACTED as $needle ) {
-			if ( str_contains( $key, $needle ) ) {
+			if ( false !== strpos( $key, $needle ) ) {
 				return true;
 			}
 		}

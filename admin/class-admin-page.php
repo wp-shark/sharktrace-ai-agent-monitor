@@ -26,8 +26,10 @@ class Admin_Page {
 
 	/**
 	 * Hook suffix handed back by add_management_page().
+	 *
+	 * @var string
 	 */
-	private string $hook_suffix = '';
+	private $hook_suffix = '';
 
 	/**
 	 * Hook the admin menu.

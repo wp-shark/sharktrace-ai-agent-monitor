@@ -35,7 +35,7 @@ spl_autoload_register(
 	static function ( string $class_name ): void {
 		$prefix = __NAMESPACE__ . '\\';
 
-		if ( ! str_starts_with( $class_name, $prefix ) ) {
+		if ( 0 !== strpos( $class_name, $prefix ) ) {
 			return;
 		}
 

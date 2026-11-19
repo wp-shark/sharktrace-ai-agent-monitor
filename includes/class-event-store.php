@@ -343,10 +343,12 @@ class Event_Store {
 			'sessions'   => (int) ( $row['sessions'] ?? 0 ),
 			'latest_id'  => (int) $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(id) FROM %i', $table ) ),
 			'top_agents' => array_map(
-				static fn( array $a ): array => array(
-					'agent_name' => (string) $a['agent_name'],
-					'actions'    => (int) $a['actions'],
-				),
+				static function ( array $a ): array {
+					return array(
+						'agent_name' => (string) $a['agent_name'],
+						'actions'    => (int) $a['actions'],
+					);
+				},
 				$top ?: array()
 			),
 		);

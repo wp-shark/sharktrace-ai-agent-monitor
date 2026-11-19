@@ -21,7 +21,12 @@ class Plugin {
 	public const RETENTION_OPTION = 'staiam_retention_days';
 	public const CLEANUP_HOOK     = 'staiam_daily_cleanup';
 
-	private static ?Plugin $instance = null;
+	/**
+	 * Singleton instance.
+	 *
+	 * @var Plugin|null
+	 */
+	private static $instance = null;
 
 	/**
 	 * Shared instance.

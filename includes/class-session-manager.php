@@ -19,7 +19,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class Session_Manager {
 
-	private static string $session_id = '';
+	/**
+	 * Current session ID.
+	 *
+	 * @var string
+	 */
+	private static $session_id = '';
 
 	/**
 	 * Session id for the current request. Stable for the whole request.
