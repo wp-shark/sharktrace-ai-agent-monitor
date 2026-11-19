@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Hard rule: an event is only ever labelled `agent` when there is a positive
  * signal (an Abilities API execution, or an explicit agent/MCP client header).
- * Everything else stays `unknown` Ã¢â‚¬â€ never guess.
+ * Everything else stays `unknown` — never guess.
  */
 class Agent_Detector {
 

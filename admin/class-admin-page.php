@@ -81,7 +81,7 @@ class Admin_Page {
 			'staiam-admin',
 			'STAIAM',
 			array(
-				'root'      => esc_url_raw( rest_url( Rest_Api::NAMESPACE ) ),
+				'namespace' => '/' . Rest_Api::NAMESPACE,
 				'nonce'     => wp_create_nonce( 'wp_rest' ),
 				'pollMs'    => 5000,
 				'retention' => Plugin::retention_days(),

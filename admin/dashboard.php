@@ -31,17 +31,17 @@ defined( 'ABSPATH' ) || exit;
 	<?php endif; ?>
 
 	<div class="staiam-stats" id="staiam-stats">
-		<div class="staiam-stat"><span class="staiam-stat__label"><?php esc_html_e( 'Agent actions', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="agent">Ã¢â‚¬â€</span></div>
-		<div class="staiam-stat"><span class="staiam-stat__label"><?php esc_html_e( 'Total events', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="total">Ã¢â‚¬â€</span></div>
-		<div class="staiam-stat"><span class="staiam-stat__label"><?php esc_html_e( 'Sessions', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="sessions">Ã¢â‚¬â€</span></div>
-		<div class="staiam-stat staiam-stat--warn"><span class="staiam-stat__label"><?php esc_html_e( 'High risk', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="high_risk">Ã¢â‚¬â€</span></div>
-		<div class="staiam-stat staiam-stat--error"><span class="staiam-stat__label"><?php esc_html_e( 'Failed / blocked', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="failed">Ã¢â‚¬â€</span></div>
+		<div class="staiam-stat"><span class="staiam-stat__label"><?php esc_html_e( 'Agent actions', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="agent">—</span></div>
+		<div class="staiam-stat"><span class="staiam-stat__label"><?php esc_html_e( 'Total events', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="total">—</span></div>
+		<div class="staiam-stat"><span class="staiam-stat__label"><?php esc_html_e( 'Sessions', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="sessions">—</span></div>
+		<div class="staiam-stat staiam-stat--warn"><span class="staiam-stat__label"><?php esc_html_e( 'High risk', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="high_risk">—</span></div>
+		<div class="staiam-stat staiam-stat--error"><span class="staiam-stat__label"><?php esc_html_e( 'Failed / blocked', 'sharktrace-ai-agent-monitor' ); ?></span><span class="staiam-stat__value" data-stat="failed">—</span></div>
 		<p class="staiam-stats__note"><?php esc_html_e( 'Last 24 hours', 'sharktrace-ai-agent-monitor' ); ?></p>
 	</div>
 
 	<div class="staiam-filters">
 		<label class="screen-reader-text" for="staiam-search"><?php esc_html_e( 'Search activity', 'sharktrace-ai-agent-monitor' ); ?></label>
-		<input type="search" id="staiam-search" placeholder="<?php esc_attr_e( 'Search activityÃ¢â‚¬Â¦', 'sharktrace-ai-agent-monitor' ); ?>">
+		<input type="search" id="staiam-search" placeholder="<?php esc_attr_e( 'Search activity…', 'sharktrace-ai-agent-monitor' ); ?>">
 
 		<select id="staiam-source" aria-label="<?php esc_attr_e( 'Source', 'sharktrace-ai-agent-monitor' ); ?>">
 			<option value=""><?php esc_html_e( 'All sources', 'sharktrace-ai-agent-monitor' ); ?></option>
@@ -69,7 +69,7 @@ defined( 'ABSPATH' ) || exit;
 		<section class="staiam-panel staiam-panel--feed" aria-labelledby="staiam-feed-heading">
 			<h2 id="staiam-feed-heading" class="staiam-panel__heading"><?php esc_html_e( 'Live activity', 'sharktrace-ai-agent-monitor' ); ?></h2>
 			<ol class="staiam-feed" id="staiam-feed"></ol>
-			<p class="staiam-empty" id="staiam-empty"><?php esc_html_e( 'Loading activityÃ¢â‚¬Â¦', 'sharktrace-ai-agent-monitor' ); ?></p>
+			<p class="staiam-empty" id="staiam-empty"><?php esc_html_e( 'Loading activity…', 'sharktrace-ai-agent-monitor' ); ?></p>
 		</section>
 
 		<aside class="staiam-panel staiam-panel--detail" aria-labelledby="staiam-detail-heading">
@@ -84,7 +84,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		printf(
 			/* translators: %d: number of days. */
-			esc_html__( 'Events older than %d days are removed automatically. Attribution is only shown when WordPress can prove it Ã¢â‚¬â€ anything else is reported as unknown.', 'sharktrace-ai-agent-monitor' ),
+			esc_html__( 'Events older than %d days are removed automatically. Attribution is only shown when WordPress can prove it — anything else is reported as unknown.', 'sharktrace-ai-agent-monitor' ),
 			(int) STAIAM\Plugin::retention_days()
 		);
 		?>

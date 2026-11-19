@@ -4,7 +4,7 @@ Tags: ai, activity log, audit log, monitoring, security
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,10 +103,19 @@ cleanup job. Deactivating alone keeps the stored events.
 
 == Changelog ==
 
+= 0.1.1 =
+* Fix: PHP 7.2 compatibility (no typed properties, arrow functions or PHP 8 string functions).
+* Fix: Live activity feed failed to load on sites using plain permalinks.
+* Fix: Events could appear twice in the feed when the page first loaded.
+* Fix: Garbled characters in admin screen text.
+
 = 0.1.0 =
 * First release: Abilities API and core write collection, risk classification, live control room screen, REST API and daily retention cleanup.
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+PHP 7.2 compatibility and live feed fixes.
 
 = 0.1.0 =
 First release.

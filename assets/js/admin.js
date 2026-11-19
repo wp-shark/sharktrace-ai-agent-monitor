@@ -1,5 +1,5 @@
 /**
- * SharkTrace AI Agent Monitor Ã¢â‚¬â€ control room.
+ * SharkTrace AI Agent Monitor — control room.
  *
  * Phase 1 uses polling. SSE replaces the poller in Phase 1.5 without changing
  * the rendering path: both feed events into `prepend()`.
@@ -17,6 +17,8 @@
 	var state = {
 		live: true,
 		latestId: 0,
+		loading: false,
+		generation: 0,
 		selected: null,
 		events: [],
 		timer: null,
@@ -67,26 +69,49 @@
 	}
 
 	function get( path ) {
-		return apiFetch( { url: config.root + path } );
+		return apiFetch( { path: config.namespace + path } );
 	}
 
 	function loadEvents( reset ) {
 		if ( reset ) {
+			// A new generation makes any request still in flight stale.
+			state.generation++;
 			state.latestId = 0;
 			state.events = [];
 			el.feed.innerHTML = '';
+		} else if ( state.loading ) {
+			// A poll while the previous request is pending would fetch the same rows twice.
+			return Promise.resolve();
 		}
 
+		var generation = state.generation;
 		var extra = state.latestId ? { since_id: state.latestId } : { per_page: 50 };
+
+		state.loading = true;
+
+		function done() {
+			if ( generation === state.generation ) {
+				state.loading = false;
+			}
+		}
 
 		return get( '/events' + query( extra ) )
 			.then( function ( response ) {
+				if ( generation !== state.generation ) {
+					return;
+				}
+
 				var events = ( response && response.events ) || [];
 
 				if ( events.length ) {
+					var isNew = state.latestId > 0;
+					var after = state.latestId;
+
 					// API returns newest first; render oldest-of-batch first so order stays right.
 					events.slice().reverse().forEach( function ( event ) {
-						prepend( event, state.latestId > 0 );
+						if ( event.id > after ) {
+							prepend( event, isNew );
+						}
 					} );
 
 					state.latestId = Math.max.apply(
@@ -100,9 +125,13 @@
 				updateEmptyState();
 			} )
 			.catch( function () {
+				if ( generation !== state.generation ) {
+					return;
+				}
 				el.empty.textContent = i18n.loadError;
 				el.empty.hidden = false;
-			} );
+			} )
+			.then( done, done );
 	}
 
 	function loadStats() {
@@ -215,7 +244,7 @@
 
 	function stringify( value ) {
 		if ( value === null || value === undefined ) {
-			return 'Ã¢â‚¬â€';
+			return '—';
 		}
 		if ( typeof value === 'object' ) {
 			return JSON.stringify( value );
@@ -232,16 +261,16 @@
 
 		var facts = [
 			[ 'Source', sourceLabel( event ) ],
-			[ 'Transport', event.transport || 'Ã¢â‚¬â€' ],
-			[ 'Ability', event.ability || 'Ã¢â‚¬â€' ],
+			[ 'Transport', event.transport || '—' ],
+			[ 'Ability', event.ability || '—' ],
 			[ 'Action', event.action ],
-			[ 'Target', event.object_type ? event.object_type + ' ' + event.object_id : 'Ã¢â‚¬â€' ],
+			[ 'Target', event.object_type ? event.object_type + ' ' + event.object_id : '—' ],
 			[ 'Status', event.status ],
 			[ 'Risk', event.risk_level ],
-			[ 'Duration', event.duration_ms ? event.duration_ms + ' ms' : 'Ã¢â‚¬â€' ],
-			[ 'User', event.user_login || 'Ã¢â‚¬â€' ],
+			[ 'Duration', event.duration_ms ? event.duration_ms + ' ms' : '—' ],
+			[ 'User', event.user_login || '—' ],
 			[ 'Time', event.date_local ],
-			[ 'Session', event.session_id ? event.session_id.slice( 0, 8 ) : 'Ã¢â‚¬â€' ],
+			[ 'Session', event.session_id ? event.session_id.slice( 0, 8 ) : '—' ],
 		];
 
 		var dl = document.createElement( 'dl' );
@@ -373,7 +402,7 @@
 			return;
 		}
 
-		apiFetch( { url: config.root + '/events', method: 'DELETE' } ).then( function () {
+		apiFetch( { path: config.namespace + '/events', method: 'DELETE' } ).then( function () {
 			loadEvents( true );
 			loadStats();
 		} );

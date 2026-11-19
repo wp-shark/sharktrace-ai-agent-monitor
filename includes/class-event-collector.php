@@ -40,7 +40,7 @@ class Event_Collector {
 	 * Register every hook this collector listens to.
 	 */
 	public function register(): void {
-		// Abilities API Ã¢â‚¬â€ the one path where attribution is certain.
+		// Abilities API — the one path where attribution is certain.
 		add_action( 'wp_ability_invoked', array( $this, 'on_ability_invoked' ), 10, 3 );
 		add_filter( 'wp_ability_permission_result', array( $this, 'on_ability_permission' ), 100, 3 );
 		// execute_result fires for successes *and* WP_Error returns; wp_after_execute_ability does not.
@@ -72,7 +72,7 @@ class Event_Collector {
 	 * ------------------------------------------------------------------ */
 
 	/**
-	 * An ability was invoked Ã¢â‚¬â€ open a pending record and claim attribution.
+	 * An ability was invoked — open a pending record and claim attribution.
 	 *
 	 * @param string $ability_name Ability name.
 	 * @param mixed  $input        Raw input.
@@ -129,7 +129,7 @@ class Event_Collector {
 	}
 
 	/**
-	 * An ability's execute callback returned Ã¢â‚¬â€ success or WP_Error.
+	 * An ability's execute callback returned — success or WP_Error.
 	 *
 	 * @param mixed  $result       Execution result.
 	 * @param string $ability_name Ability name.
@@ -668,7 +668,7 @@ class Event_Collector {
 	 */
 	private function sanitize_payload( $value, int $depth = 0 ) {
 		if ( $depth > 4 ) {
-			return 'Ã¢â‚¬Â¦';
+			return '…';
 		}
 
 		if ( is_object( $value ) ) {
@@ -715,6 +715,6 @@ class Event_Collector {
 	 * Cap a stored string.
 	 */
 	private function truncate( string $value, int $length = self::MAX_VALUE_LENGTH ): string {
-		return mb_strlen( $value ) > $length ? mb_substr( $value, 0, $length ) . 'Ã¢â‚¬Â¦' : $value;
+		return mb_strlen( $value ) > $length ? mb_substr( $value, 0, $length ) . '…' : $value;
 	}
 }

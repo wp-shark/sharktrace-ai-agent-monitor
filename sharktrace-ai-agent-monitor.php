@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       SharkTrace AI Agent Monitor
  * Plugin URI:        https://github.com/wp-shark/sharktrace-ai-agent-monitor
- * Description:       AI observability for WordPress. See what AI agents do inside your site â€” in real time.
- * Version:           0.1.0
+ * Description:       AI observability for WordPress. See what AI agents do inside your site — in real time.
+ * Version:           0.1.1
  * Requires at least: 6.7
  * Requires PHP: 7.2
  * Author:            Iqbal Hossain
@@ -20,7 +20,7 @@ namespace STAIAM;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'STAIAM_VERSION', '0.1.0' );
+define( 'STAIAM_VERSION', '0.1.1' );
 define( 'STAIAM_FILE', __FILE__ );
 define( 'STAIAM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'STAIAM_URL', plugin_dir_url( __FILE__ ) );

@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Maps an action to a risk level.
  *
- * Phase 1 is observability only â€” nothing here blocks anything yet.
+ * Phase 1 is observability only — nothing here blocks anything yet.
  */
 class Risk_Analyzer {
 

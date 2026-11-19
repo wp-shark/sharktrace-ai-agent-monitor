@@ -1,8 +1,8 @@
 # SharkTrace AI Agent Monitor
 
-> AI observability for WordPress. See what AI agents do inside your site Ã¢â‚¬â€ in real time.
+> AI observability for WordPress. See what AI agents do inside your site — in real time.
 
-Version 0.1.0 Ã¢â‚¬â€ Phase 1 (observability). See [ROADMAP.md](ROADMAP.md) for the full task breakdown.
+Version 0.1.0 — Phase 1 (observability). See [ROADMAP.md](ROADMAP.md) for the full task breakdown.
 
 ## What works today
 
@@ -10,12 +10,12 @@ Version 0.1.0 Ã¢â‚¬â€ Phase 1 (observability). See [ROADMAP.md](ROADM
   prove it: an Abilities API execution, or an explicit `X-Agent-Name` / `X-MCP-Client`
   header over REST or WP-CLI. Everything else reads *Unknown / WordPress*.
 - **Abilities API collection.** Every `WP_Ability::execute()` is recorded with input,
-  result, duration, and outcome Ã¢â‚¬â€ including permission denials (`blocked`) and
+  result, duration, and outcome — including permission denials (`blocked`) and
   failures that never reached completion.
 - **Core write collection.** Posts, trash, permanent deletes, media uploads, terms,
   user creation, role changes, user deletion, watched options, plugin activation.
 - **Risk classification.** low / medium / high, with critical options
-  (`siteurl`, `home`, `active_plugins`, `default_role`, Ã¢â‚¬Â¦) always high.
+  (`siteurl`, `home`, `active_plugins`, `default_role`, …) always high.
 - **Control room screen.** Live feed with 24-hour counters, search and filters, and a
   detail pane showing before/after values.
 - **REST API** under `sharktrace-ai-agent-monitor/v1`, `manage_options` required.
