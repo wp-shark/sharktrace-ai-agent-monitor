@@ -2,22 +2,22 @@
 /**
  * Event storage: schema, writes and queries.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM;
+namespace STAIAM;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Owns the wp_ai_agent_events table.
+ * Owns the wp_staiam_events table.
  */
 class Event_Store {
 
 	public const DB_VERSION        = '1';
-	public const DB_VERSION_OPTION = 'aiam_db_version';
+	public const DB_VERSION_OPTION = 'staiam_db_version';
 
 	/**
 	 * Fully qualified table name.
@@ -25,7 +25,7 @@ class Event_Store {
 	public static function table(): string {
 		global $wpdb;
 
-		return $wpdb->prefix . 'ai_agent_events';
+		return $wpdb->prefix . 'staiam_events';
 	}
 
 	/**
@@ -37,6 +37,8 @@ class Event_Store {
 		if ( get_option( self::DB_VERSION_OPTION ) === self::DB_VERSION ) {
 			return;
 		}
+
+		self::migrate_legacy_table();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
@@ -77,6 +79,52 @@ class Event_Store {
 		dbDelta( $sql );
 
 		update_option( self::DB_VERSION_OPTION, self::DB_VERSION, false );
+	}
+
+	/**
+	 * Carry data over from the pre-rename table, when the plugin was called AI Agent Monitor.
+	 *
+	 * Only renames when the old table is there and the new one is not, so a fresh
+	 * install and a re-run both do nothing.
+	 */
+	private static function migrate_legacy_table(): void {
+		global $wpdb;
+
+		$legacy = $wpdb->prefix . 'ai_agent_events';
+		$table  = self::table();
+
+		$has_legacy = (bool) $wpdb->get_var(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $legacy ) )
+		);
+
+		if ( ! $has_legacy ) {
+			return;
+		}
+
+		$has_current = (bool) $wpdb->get_var(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) )
+		);
+
+		if ( $has_current ) {
+			return;
+		}
+
+		$wpdb->query( $wpdb->prepare( 'RENAME TABLE %i TO %i', $legacy, $table ) );
+
+		$retention = get_option( 'aiam_retention_days' );
+
+		if ( false !== $retention && false === get_option( Plugin::RETENTION_OPTION, false ) ) {
+			update_option( Plugin::RETENTION_OPTION, $retention, false );
+		}
+
+		delete_option( 'aiam_db_version' );
+		delete_option( 'aiam_retention_days' );
+
+		$timestamp = wp_next_scheduled( 'aiam_daily_cleanup' );
+
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, 'aiam_daily_cleanup' );
+		}
 	}
 
 	/**

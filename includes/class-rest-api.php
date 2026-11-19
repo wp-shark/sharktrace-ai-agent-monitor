@@ -2,12 +2,12 @@
 /**
  * REST endpoints backing the dashboard.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM;
+namespace STAIAM;
 
 use WP_REST_Request;
 use WP_REST_Response;
@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Rest_Api {
 
-	public const NAMESPACE = 'ai-monitor/v1';
+	public const NAMESPACE = 'sharktrace-ai-agent-monitor/v1';
 
 	/**
 	 * Hook route registration.
@@ -106,7 +106,7 @@ class Rest_Api {
 		 *
 		 * @param string $capability Capability name.
 		 */
-		return current_user_can( (string) apply_filters( 'aiam_view_capability', 'manage_options' ) );
+		return current_user_can( (string) apply_filters( 'staiam_view_capability', 'manage_options' ) );
 	}
 
 	/**
@@ -151,8 +151,8 @@ class Rest_Api {
 
 		if ( ! $event ) {
 			return new WP_Error(
-				'aiam_event_not_found',
-				__( 'Event not found.', 'ai-agent-monitor' ),
+				'staiam_event_not_found',
+				__( 'Event not found.', 'sharktrace-ai-agent-monitor' ),
 				array( 'status' => 404 )
 			);
 		}

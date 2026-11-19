@@ -1,5 +1,5 @@
 /**
- * AI Agent Monitor — control room.
+ * SharkTrace AI Agent Monitor Ã¢â‚¬â€ control room.
  *
  * Phase 1 uses polling. SSE replaces the poller in Phase 1.5 without changing
  * the rendering path: both feed events into `prepend()`.
@@ -23,17 +23,17 @@
 	};
 
 	var el = {
-		feed: document.getElementById( 'aiam-feed' ),
-		empty: document.getElementById( 'aiam-empty' ),
-		detail: document.getElementById( 'aiam-detail' ),
-		stats: document.getElementById( 'aiam-stats' ),
-		live: document.getElementById( 'aiam-live' ),
-		liveLabel: document.getElementById( 'aiam-live-label' ),
-		clear: document.getElementById( 'aiam-clear' ),
-		search: document.getElementById( 'aiam-search' ),
-		source: document.getElementById( 'aiam-source' ),
-		risk: document.getElementById( 'aiam-risk' ),
-		status: document.getElementById( 'aiam-status' ),
+		feed: document.getElementById( 'staiam-feed' ),
+		empty: document.getElementById( 'staiam-empty' ),
+		detail: document.getElementById( 'staiam-detail' ),
+		stats: document.getElementById( 'staiam-stats' ),
+		live: document.getElementById( 'staiam-live' ),
+		liveLabel: document.getElementById( 'staiam-live-label' ),
+		clear: document.getElementById( 'staiam-clear' ),
+		search: document.getElementById( 'staiam-search' ),
+		source: document.getElementById( 'staiam-source' ),
+		risk: document.getElementById( 'staiam-risk' ),
+		status: document.getElementById( 'staiam-status' ),
 	};
 
 	if ( ! el.feed ) {
@@ -122,7 +122,7 @@
 
 	function tag( text, modifier ) {
 		var span = document.createElement( 'span' );
-		span.className = 'aiam-tag' + ( modifier ? ' aiam-tag--' + modifier : '' );
+		span.className = 'staiam-tag' + ( modifier ? ' staiam-tag--' + modifier : '' );
 		span.textContent = text;
 		return span;
 	}
@@ -139,24 +139,24 @@
 
 	function prepend( event, isNew ) {
 		var item = document.createElement( 'li' );
-		item.className = 'aiam-event' + ( isNew ? ' aiam-event--new' : '' );
+		item.className = 'staiam-event' + ( isNew ? ' staiam-event--new' : '' );
 		item.setAttribute( 'role', 'button' );
 		item.setAttribute( 'tabindex', '0' );
 		item.setAttribute( 'aria-selected', 'false' );
 		item.dataset.id = event.id;
 
 		var time = document.createElement( 'span' );
-		time.className = 'aiam-event__time';
+		time.className = 'staiam-event__time';
 		time.textContent = event.time_local || '';
 
 		var body = document.createElement( 'div' );
 
 		var label = document.createElement( 'p' );
-		label.className = 'aiam-event__label';
+		label.className = 'staiam-event__label';
 		label.textContent = event.label;
 
 		var meta = document.createElement( 'div' );
-		meta.className = 'aiam-event__meta';
+		meta.className = 'staiam-event__meta';
 		meta.appendChild( tag( sourceLabel( event ), event.source ) );
 		meta.appendChild( tag( event.action ) );
 
@@ -201,8 +201,8 @@
 
 		[
 			[ field, '' ],
-			[ before, 'aiam-diff__before' ],
-			[ after, 'aiam-diff__after' ],
+			[ before, 'staiam-diff__before' ],
+			[ after, 'staiam-diff__after' ],
 		].forEach( function ( cell ) {
 			var td = document.createElement( 'td' );
 			td.className = cell[ 1 ];
@@ -215,7 +215,7 @@
 
 	function stringify( value ) {
 		if ( value === null || value === undefined ) {
-			return '—';
+			return 'Ã¢â‚¬â€';
 		}
 		if ( typeof value === 'object' ) {
 			return JSON.stringify( value );
@@ -232,16 +232,16 @@
 
 		var facts = [
 			[ 'Source', sourceLabel( event ) ],
-			[ 'Transport', event.transport || '—' ],
-			[ 'Ability', event.ability || '—' ],
+			[ 'Transport', event.transport || 'Ã¢â‚¬â€' ],
+			[ 'Ability', event.ability || 'Ã¢â‚¬â€' ],
 			[ 'Action', event.action ],
-			[ 'Target', event.object_type ? event.object_type + ' ' + event.object_id : '—' ],
+			[ 'Target', event.object_type ? event.object_type + ' ' + event.object_id : 'Ã¢â‚¬â€' ],
 			[ 'Status', event.status ],
 			[ 'Risk', event.risk_level ],
-			[ 'Duration', event.duration_ms ? event.duration_ms + ' ms' : '—' ],
-			[ 'User', event.user_login || '—' ],
+			[ 'Duration', event.duration_ms ? event.duration_ms + ' ms' : 'Ã¢â‚¬â€' ],
+			[ 'User', event.user_login || 'Ã¢â‚¬â€' ],
 			[ 'Time', event.date_local ],
-			[ 'Session', event.session_id ? event.session_id.slice( 0, 8 ) : '—' ],
+			[ 'Session', event.session_id ? event.session_id.slice( 0, 8 ) : 'Ã¢â‚¬â€' ],
 		];
 
 		var dl = document.createElement( 'dl' );
@@ -259,7 +259,7 @@
 
 		if ( event.error ) {
 			var error = document.createElement( 'div' );
-			error.className = 'aiam-error-box';
+			error.className = 'staiam-error-box';
 			error.textContent = event.error;
 			el.detail.appendChild( error );
 		}
@@ -272,12 +272,12 @@
 
 		if ( keys.length ) {
 			var heading = document.createElement( 'p' );
-			heading.className = 'aiam-detail__section-title';
+			heading.className = 'staiam-detail__section-title';
 			heading.textContent = 'Before / after';
 			el.detail.appendChild( heading );
 
 			var table = document.createElement( 'table' );
-			table.className = 'aiam-diff';
+			table.className = 'staiam-diff';
 
 			var head = document.createElement( 'tr' );
 			[ 'Field', 'Before', 'After' ].forEach( function ( text ) {
@@ -304,7 +304,7 @@
 			return;
 		}
 
-		el.feed.querySelectorAll( '.aiam-event' ).forEach( function ( node ) {
+		el.feed.querySelectorAll( '.staiam-event' ).forEach( function ( node ) {
 			node.setAttribute( 'aria-selected', node.dataset.id === String( id ) ? 'true' : 'false' );
 		} );
 
@@ -347,7 +347,7 @@
 	/* ------------------------------------------------------------------ */
 
 	el.feed.addEventListener( 'click', function ( event ) {
-		var item = event.target.closest( '.aiam-event' );
+		var item = event.target.closest( '.staiam-event' );
 		if ( item ) {
 			select( item.dataset.id );
 		}
@@ -357,7 +357,7 @@
 		if ( event.key !== 'Enter' && event.key !== ' ' ) {
 			return;
 		}
-		var item = event.target.closest( '.aiam-event' );
+		var item = event.target.closest( '.staiam-event' );
 		if ( item ) {
 			event.preventDefault();
 			select( item.dataset.id );
@@ -399,4 +399,4 @@
 	loadEvents( true ).then( loadStats );
 	setLive( true );
 	startPolling();
-}( window.wp, window.AIAM || {} ) );
+}( window.wp, window.STAIAM || {} ) );

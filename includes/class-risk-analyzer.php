@@ -2,19 +2,19 @@
 /**
  * Risk classification for collected events.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM;
+namespace STAIAM;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Maps an action to a risk level.
  *
- * Phase 1 is observability only — nothing here blocks anything yet.
+ * Phase 1 is observability only â€” nothing here blocks anything yet.
  */
 class Risk_Analyzer {
 
@@ -99,7 +99,7 @@ class Risk_Analyzer {
 		 * @param string               $action  Normalised action slug.
 		 * @param array<string, mixed> $context Event context.
 		 */
-		return (string) apply_filters( 'aiam_risk_level', $level, $action, $context );
+		return (string) apply_filters( 'staiam_risk_level', $level, $action, $context );
 	}
 
 	/**
@@ -125,6 +125,6 @@ class Risk_Analyzer {
 		 *
 		 * @param array<int, string> $watched Option names.
 		 */
-		return (array) apply_filters( 'aiam_watched_options', $watched );
+		return (array) apply_filters( 'staiam_watched_options', $watched );
 	}
 }

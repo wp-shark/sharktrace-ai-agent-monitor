@@ -2,18 +2,18 @@
 /**
  * Admin screen registration.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM\Admin;
+namespace STAIAM\Admin;
 
-use AIAM\Agent_Detector;
-use AIAM\Event_Store;
-use AIAM\Plugin;
-use AIAM\Rest_Api;
-use AIAM\Risk_Analyzer;
+use STAIAM\Agent_Detector;
+use STAIAM\Event_Store;
+use STAIAM\Plugin;
+use STAIAM\Rest_Api;
+use STAIAM\Risk_Analyzer;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,7 +22,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class Admin_Page {
 
-	public const SLUG = 'ai-agent-monitor';
+	public const SLUG = 'sharktrace-ai-agent-monitor';
+
+	/**
+	 * Hook suffix handed back by add_management_page().
+	 */
+	private string $hook_suffix = '';
 
 	/**
 	 * Hook the admin menu.
@@ -33,17 +38,15 @@ class Admin_Page {
 	}
 
 	/**
-	 * Add the top-level menu entry.
+	 * Register the screen under Tools, where site utilities belong.
 	 */
 	public function add_menu(): void {
-		add_menu_page(
-			__( 'AI Agent Monitor', 'ai-agent-monitor' ),
-			__( 'AI Monitor', 'ai-agent-monitor' ),
+		$this->hook_suffix = (string) add_management_page(
+			__( 'SharkTrace AI Agent Monitor', 'sharktrace-ai-agent-monitor' ),
+			__( 'SharkTrace AI Agent Monitor', 'sharktrace-ai-agent-monitor' ),
 			'manage_options',
 			self::SLUG,
-			array( $this, 'render' ),
-			'dashicons-visibility',
-			3
+			array( $this, 'render' )
 		);
 	}
 
@@ -53,41 +56,41 @@ class Admin_Page {
 	 * @param string $hook_suffix Current admin page.
 	 */
 	public function enqueue( string $hook_suffix ): void {
-		if ( 'toplevel_page_' . self::SLUG !== $hook_suffix ) {
+		if ( '' === $this->hook_suffix || $hook_suffix !== $this->hook_suffix ) {
 			return;
 		}
 
 		wp_enqueue_style(
-			'aiam-admin',
-			AIAM_URL . 'assets/css/admin.css',
+			'staiam-admin',
+			STAIAM_URL . 'assets/css/admin.css',
 			array(),
-			AIAM_VERSION
+			STAIAM_VERSION
 		);
 
 		wp_enqueue_script(
-			'aiam-admin',
-			AIAM_URL . 'assets/js/admin.js',
+			'staiam-admin',
+			STAIAM_URL . 'assets/js/admin.js',
 			array( 'wp-api-fetch' ),
-			AIAM_VERSION,
+			STAIAM_VERSION,
 			true
 		);
 
 		wp_localize_script(
-			'aiam-admin',
-			'AIAM',
+			'staiam-admin',
+			'STAIAM',
 			array(
 				'root'      => esc_url_raw( rest_url( Rest_Api::NAMESPACE ) ),
 				'nonce'     => wp_create_nonce( 'wp_rest' ),
 				'pollMs'    => 5000,
 				'retention' => Plugin::retention_days(),
 				'i18n'      => array(
-					'live'        => __( 'LIVE', 'ai-agent-monitor' ),
-					'paused'      => __( 'PAUSED', 'ai-agent-monitor' ),
-					'empty'       => __( 'No activity recorded yet. Events appear here as soon as something changes.', 'ai-agent-monitor' ),
-					'loadError'   => __( 'Could not load activity.', 'ai-agent-monitor' ),
-					'confirmWipe' => __( 'Delete every recorded event? This cannot be undone.', 'ai-agent-monitor' ),
-					'noBefore'    => __( 'No previous value recorded.', 'ai-agent-monitor' ),
-					'unattributed' => __( 'Unknown / WordPress', 'ai-agent-monitor' ),
+					'live'        => __( 'LIVE', 'sharktrace-ai-agent-monitor' ),
+					'paused'      => __( 'PAUSED', 'sharktrace-ai-agent-monitor' ),
+					'empty'       => __( 'No activity recorded yet. Events appear here as soon as something changes.', 'sharktrace-ai-agent-monitor' ),
+					'loadError'   => __( 'Could not load activity.', 'sharktrace-ai-agent-monitor' ),
+					'confirmWipe' => __( 'Delete every recorded event? This cannot be undone.', 'sharktrace-ai-agent-monitor' ),
+					'noBefore'    => __( 'No previous value recorded.', 'sharktrace-ai-agent-monitor' ),
+					'unattributed' => __( 'Unknown / WordPress', 'sharktrace-ai-agent-monitor' ),
 				),
 			)
 		);
@@ -98,26 +101,26 @@ class Admin_Page {
 	 */
 	public function render(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to view this page.', 'ai-agent-monitor' ) );
+			wp_die( esc_html__( 'You do not have permission to view this page.', 'sharktrace-ai-agent-monitor' ) );
 		}
 
 		$installed = Event_Store::is_installed();
 		$sources   = array(
-			Agent_Detector::SOURCE_AGENT   => __( 'AI agent', 'ai-agent-monitor' ),
-			Agent_Detector::SOURCE_HUMAN   => __( 'Human', 'ai-agent-monitor' ),
-			Agent_Detector::SOURCE_UNKNOWN => __( 'Unknown', 'ai-agent-monitor' ),
+			Agent_Detector::SOURCE_AGENT   => __( 'AI agent', 'sharktrace-ai-agent-monitor' ),
+			Agent_Detector::SOURCE_HUMAN   => __( 'Human', 'sharktrace-ai-agent-monitor' ),
+			Agent_Detector::SOURCE_UNKNOWN => __( 'Unknown', 'sharktrace-ai-agent-monitor' ),
 		);
 		$risks     = array(
-			Risk_Analyzer::HIGH   => __( 'High', 'ai-agent-monitor' ),
-			Risk_Analyzer::MEDIUM => __( 'Medium', 'ai-agent-monitor' ),
-			Risk_Analyzer::LOW    => __( 'Low', 'ai-agent-monitor' ),
+			Risk_Analyzer::HIGH   => __( 'High', 'sharktrace-ai-agent-monitor' ),
+			Risk_Analyzer::MEDIUM => __( 'Medium', 'sharktrace-ai-agent-monitor' ),
+			Risk_Analyzer::LOW    => __( 'Low', 'sharktrace-ai-agent-monitor' ),
 		);
 		$statuses  = array(
-			'success' => __( 'Success', 'ai-agent-monitor' ),
-			'failed'  => __( 'Failed', 'ai-agent-monitor' ),
-			'blocked' => __( 'Blocked', 'ai-agent-monitor' ),
+			'success' => __( 'Success', 'sharktrace-ai-agent-monitor' ),
+			'failed'  => __( 'Failed', 'sharktrace-ai-agent-monitor' ),
+			'blocked' => __( 'Blocked', 'sharktrace-ai-agent-monitor' ),
 		);
 
-		require AIAM_DIR . 'admin/dashboard.php';
+		require STAIAM_DIR . 'admin/dashboard.php';
 	}
 }

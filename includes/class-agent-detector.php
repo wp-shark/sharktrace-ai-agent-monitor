@@ -2,12 +2,12 @@
 /**
  * Attribution: who or what caused the current request.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM;
+namespace STAIAM;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Hard rule: an event is only ever labelled `agent` when there is a positive
  * signal (an Abilities API execution, or an explicit agent/MCP client header).
- * Everything else stays `unknown` — never guess.
+ * Everything else stays `unknown` Ã¢â‚¬â€ never guess.
  */
 class Agent_Detector {
 
@@ -192,9 +192,9 @@ class Agent_Detector {
 		}
 
 		if ( '' !== $ability ) {
-			return __( 'Unnamed agent', 'ai-agent-monitor' );
+			return __( 'Unnamed agent', 'sharktrace-ai-agent-monitor' );
 		}
 
-		return __( 'Unidentified client', 'ai-agent-monitor' );
+		return __( 'Unidentified client', 'sharktrace-ai-agent-monitor' );
 	}
 }

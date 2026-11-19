@@ -2,14 +2,14 @@
 /**
  * Plugin container and bootstrap.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM;
+namespace STAIAM;
 
-use AIAM\Admin\Admin_Page;
+use STAIAM\Admin\Admin_Page;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,8 +18,8 @@ defined( 'ABSPATH' ) || exit;
  */
 class Plugin {
 
-	public const RETENTION_OPTION = 'aiam_retention_days';
-	public const CLEANUP_HOOK     = 'aiam_daily_cleanup';
+	public const RETENTION_OPTION = 'staiam_retention_days';
+	public const CLEANUP_HOOK     = 'staiam_daily_cleanup';
 
 	private static ?Plugin $instance = null;
 
