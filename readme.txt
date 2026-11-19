@@ -1,4 +1,4 @@
-=== AI Agent Monitor ===
+=== SharkTrace AI Agent Monitor ===
 Contributors: iqbal1hossain
 Tags: ai, activity log, audit log, monitoring, security
 Requires at least: 6.7
@@ -12,7 +12,7 @@ AI observability for WordPress. See what AI agents do inside your site, in real 
 
 == Description ==
 
-AI Agent Monitor records what AI agents, MCP clients and automations actually do on your
+SharkTrace AI Agent Monitor records what AI agents, MCP clients and automations actually do on your
 site, and shows it in a live control room screen inside wp-admin.
 
 Every recorded event keeps the who, what, when and the values that changed, so you can
@@ -37,22 +37,22 @@ plus a detail pane showing before and after values for each event.
 
 **REST API**
 
-Read-only endpoints under the `ai-monitor/v1` namespace, all requiring the
+Read-only endpoints under the `sharktrace-ai-agent-monitor/v1` namespace, all requiring the
 `manage_options` capability:
 
-* `GET /ai-monitor/v1/events` - the feed, with `search`, `source`, `status`, `risk_level`, `action_name`, `session_id`, `since_id`, `per_page` and `offset` parameters.
-* `GET /ai-monitor/v1/events/<id>` - one event with full payloads.
-* `GET /ai-monitor/v1/stats` - 24 hour counters and top agents.
-* `GET /ai-monitor/v1/sessions/<id>` - every event in one session, oldest first.
-* `DELETE /ai-monitor/v1/events` - clear the log.
+* `GET /sharktrace-ai-agent-monitor/v1/events` - the feed, with `search`, `source`, `status`, `risk_level`, `action_name`, `session_id`, `since_id`, `per_page` and `offset` parameters.
+* `GET /sharktrace-ai-agent-monitor/v1/events/<id>` - one event with full payloads.
+* `GET /sharktrace-ai-agent-monitor/v1/stats` - 24 hour counters and top agents.
+* `GET /sharktrace-ai-agent-monitor/v1/sessions/<id>` - every event in one session, oldest first.
+* `DELETE /sharktrace-ai-agent-monitor/v1/events` - clear the log.
 
 **Extension points**
 
-* `aiam_should_record` - filter. Skip events by context.
-* `aiam_pre_record_event` - filter. Alter or drop an event before storage; return a non-array to drop it.
-* `aiam_risk_level` - filter. Override risk classification.
-* `aiam_watched_options` - filter. Choose which options are logged.
-* `aiam_view_capability` - filter. Capability required to read monitoring data.
+* `staiam_should_record` - filter. Skip events by context.
+* `staiam_pre_record_event` - filter. Alter or drop an event before storage; return a non-array to drop it.
+* `staiam_risk_level` - filter. Override risk classification.
+* `staiam_watched_options` - filter. Choose which options are logged.
+* `staiam_view_capability` - filter. Capability required to read monitoring data.
 
 **Privacy and data safety**
 
@@ -65,9 +65,9 @@ window, 30 days by default, are deleted daily.
 
 == Installation ==
 
-1. Upload the `ai-agent-monitor` folder to `/wp-content/plugins/`, or install the plugin through the Plugins screen in WordPress.
+1. Upload the `sharktrace-ai-agent-monitor` folder to `/wp-content/plugins/`, or install the plugin through the Plugins screen in WordPress.
 2. Activate the plugin through the Plugins screen. Activation creates the events table.
-3. Open **AI Monitor** in the admin menu to watch activity as it happens.
+3. Open **Tools > SharkTrace AI Agent Monitor** to watch activity as it happens.
 
 == Frequently Asked Questions ==
 
@@ -84,13 +84,13 @@ collection additionally needs WordPress 7.1 or the Abilities API plugin.
 
 = Who can see the recorded data? =
 
-Users with the `manage_options` capability. Use the `aiam_view_capability` filter to
+Users with the `manage_options` capability. Use the `staiam_view_capability` filter to
 require a different capability.
 
 = How long is data kept? =
 
 30 days by default. Older events are removed by a daily cron job. Change the window with
-the `aiam_retention_days` option.
+the `staiam_retention_days` option.
 
 = Does the plugin send anything to an external service? =
 

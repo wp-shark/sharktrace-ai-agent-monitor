@@ -2,12 +2,12 @@
 /**
  * Session grouping for related events.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM;
+namespace STAIAM;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,7 +40,7 @@ class Session_Manager {
 
 		self::$session_id = '' !== $supplied
 			? substr( md5( $supplied ), 0, 32 )
-			: substr( md5( uniqid( 'aiam', true ) ), 0, 32 );
+			: substr( md5( uniqid( 'staiam', true ) ), 0, 32 );
 
 		return self::$session_id;
 	}

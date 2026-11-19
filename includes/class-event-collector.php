@@ -2,12 +2,12 @@
 /**
  * Event collection: turns WordPress hooks into monitor events.
  *
- * @package AIAM
+ * @package STAIAM
  */
 
 declare( strict_types = 1 );
 
-namespace AIAM;
+namespace STAIAM;
 
 use WP_Error;
 use WP_Post;
@@ -40,7 +40,7 @@ class Event_Collector {
 	 * Register every hook this collector listens to.
 	 */
 	public function register(): void {
-		// Abilities API — the one path where attribution is certain.
+		// Abilities API Ã¢â‚¬â€ the one path where attribution is certain.
 		add_action( 'wp_ability_invoked', array( $this, 'on_ability_invoked' ), 10, 3 );
 		add_filter( 'wp_ability_permission_result', array( $this, 'on_ability_permission' ), 100, 3 );
 		// execute_result fires for successes *and* WP_Error returns; wp_after_execute_ability does not.
@@ -72,7 +72,7 @@ class Event_Collector {
 	 * ------------------------------------------------------------------ */
 
 	/**
-	 * An ability was invoked — open a pending record and claim attribution.
+	 * An ability was invoked Ã¢â‚¬â€ open a pending record and claim attribution.
 	 *
 	 * @param string $ability_name Ability name.
 	 * @param mixed  $input        Raw input.
@@ -111,7 +111,7 @@ class Event_Collector {
 				'object_id'   => $ability_name,
 				'label'       => sprintf(
 					/* translators: %s: ability name. */
-					__( 'Permission denied for ability "%s"', 'ai-agent-monitor' ),
+					__( 'Permission denied for ability "%s"', 'sharktrace-ai-agent-monitor' ),
 					$ability_name
 				),
 				'status'      => 'blocked',
@@ -119,7 +119,7 @@ class Event_Collector {
 				'before_data' => $record['input'] ?? null,
 				'error'       => $permission instanceof WP_Error
 					? $permission->get_error_message()
-					: __( 'Ability permission callback returned false.', 'ai-agent-monitor' ),
+					: __( 'Ability permission callback returned false.', 'sharktrace-ai-agent-monitor' ),
 				'duration_ms' => $this->elapsed_ms( $record ),
 				'ability'     => $ability_name,
 			)
@@ -129,7 +129,7 @@ class Event_Collector {
 	}
 
 	/**
-	 * An ability's execute callback returned — success or WP_Error.
+	 * An ability's execute callback returned Ã¢â‚¬â€ success or WP_Error.
 	 *
 	 * @param mixed  $result       Execution result.
 	 * @param string $ability_name Ability name.
@@ -148,7 +148,7 @@ class Event_Collector {
 				'object_id'   => $ability_name,
 				'label'       => sprintf(
 					/* translators: %s: ability name. */
-					__( 'Executed ability "%s"', 'ai-agent-monitor' ),
+					__( 'Executed ability "%s"', 'sharktrace-ai-agent-monitor' ),
 					$ability_name
 				),
 				'status'      => $is_error ? 'failed' : 'success',
@@ -180,12 +180,12 @@ class Event_Collector {
 					'object_id'   => (string) $record['ability'],
 					'label'       => sprintf(
 						/* translators: %s: ability name. */
-						__( 'Ability "%s" did not complete', 'ai-agent-monitor' ),
+						__( 'Ability "%s" did not complete', 'sharktrace-ai-agent-monitor' ),
 						$record['ability']
 					),
 					'status'      => 'failed',
 					'before_data' => $record['input'] ?? null,
-					'error'       => __( 'Execution ended before completion (input validation, output validation, or a fatal error).', 'ai-agent-monitor' ),
+					'error'       => __( 'Execution ended before completion (input validation, output validation, or a fatal error).', 'sharktrace-ai-agent-monitor' ),
 					'duration_ms' => $this->elapsed_ms( $record ),
 					'ability'     => (string) $record['ability'],
 				)
@@ -244,11 +244,11 @@ class Event_Collector {
 				'object_id'   => (string) $post_id,
 				'label'       => sprintf(
 					/* translators: 1: post type label, 2: post title, 3: post id. */
-					__( '%1$s "%2$s" (#%3$d) %4$s', 'ai-agent-monitor' ),
+					__( '%1$s "%2$s" (#%3$d) %4$s', 'sharktrace-ai-agent-monitor' ),
 					$this->post_type_label( $post->post_type ),
 					$this->truncate( (string) $post->post_title, 80 ),
 					$post_id,
-					$update ? __( 'updated', 'ai-agent-monitor' ) : __( 'created', 'ai-agent-monitor' )
+					$update ? __( 'updated', 'sharktrace-ai-agent-monitor' ) : __( 'created', 'sharktrace-ai-agent-monitor' )
 				),
 				'before_data' => $before ?: null,
 				'after_data'  => $after,
@@ -275,7 +275,7 @@ class Event_Collector {
 				'object_id'   => (string) $post_id,
 				'label'       => sprintf(
 					/* translators: 1: post type label, 2: post title, 3: post id. */
-					__( '%1$s "%2$s" (#%3$d) moved to trash', 'ai-agent-monitor' ),
+					__( '%1$s "%2$s" (#%3$d) moved to trash', 'sharktrace-ai-agent-monitor' ),
 					$this->post_type_label( $post->post_type ),
 					$this->truncate( (string) $post->post_title, 80 ),
 					$post_id
@@ -306,7 +306,7 @@ class Event_Collector {
 				'object_id'   => (string) $post_id,
 				'label'       => sprintf(
 					/* translators: 1: post type label, 2: post title, 3: post id. */
-					__( '%1$s "%2$s" (#%3$d) permanently deleted', 'ai-agent-monitor' ),
+					__( '%1$s "%2$s" (#%3$d) permanently deleted', 'sharktrace-ai-agent-monitor' ),
 					$this->post_type_label( $post->post_type ),
 					$this->truncate( (string) $post->post_title, 80 ),
 					$post_id
@@ -333,7 +333,7 @@ class Event_Collector {
 				'object_id'   => (string) $post_id,
 				'label'       => sprintf(
 					/* translators: 1: file name, 2: attachment id. */
-					__( 'Uploaded media "%1$s" (#%2$d)', 'ai-agent-monitor' ),
+					__( 'Uploaded media "%1$s" (#%2$d)', 'sharktrace-ai-agent-monitor' ),
 					$this->truncate( (string) get_the_title( $post_id ), 80 ),
 					$post_id
 				),
@@ -362,7 +362,7 @@ class Event_Collector {
 				'object_id'   => (string) $term_id,
 				'label'       => sprintf(
 					/* translators: 1: term name, 2: taxonomy slug. */
-					__( 'Created term "%1$s" in %2$s', 'ai-agent-monitor' ),
+					__( 'Created term "%1$s" in %2$s', 'sharktrace-ai-agent-monitor' ),
 					is_wp_error( $term ) || ! $term ? (string) $term_id : $this->truncate( (string) $term->name, 80 ),
 					$taxonomy
 				),
@@ -389,7 +389,7 @@ class Event_Collector {
 				'object_id'   => (string) $user_id,
 				'label'       => sprintf(
 					/* translators: 1: user login, 2: user id. */
-					__( 'Created user "%1$s" (#%2$d)', 'ai-agent-monitor' ),
+					__( 'Created user "%1$s" (#%2$d)', 'sharktrace-ai-agent-monitor' ),
 					$user instanceof WP_User ? $user->user_login : (string) $user_id,
 					$user_id
 				),
@@ -423,7 +423,7 @@ class Event_Collector {
 				'object_id'   => (string) $user_id,
 				'label'       => sprintf(
 					/* translators: 1: user login, 2: old role, 3: new role. */
-					__( 'User "%1$s" role changed from %2$s to %3$s', 'ai-agent-monitor' ),
+					__( 'User "%1$s" role changed from %2$s to %3$s', 'sharktrace-ai-agent-monitor' ),
 					$user instanceof WP_User ? $user->user_login : (string) $user_id,
 					implode( ', ', $old_roles ),
 					$role
@@ -449,7 +449,7 @@ class Event_Collector {
 				'object_id'   => (string) $user_id,
 				'label'       => sprintf(
 					/* translators: 1: user login, 2: user id. */
-					__( 'Deleted user "%1$s" (#%2$d)', 'ai-agent-monitor' ),
+					__( 'Deleted user "%1$s" (#%2$d)', 'sharktrace-ai-agent-monitor' ),
 					$user instanceof WP_User ? $user->user_login : (string) $user_id,
 					$user_id
 				),
@@ -485,7 +485,7 @@ class Event_Collector {
 				'object_id'   => $option,
 				'label'       => sprintf(
 					/* translators: %s: option name. */
-					__( 'Option "%s" updated', 'ai-agent-monitor' ),
+					__( 'Option "%s" updated', 'sharktrace-ai-agent-monitor' ),
 					$option
 				),
 				'before_data' => array( $option => $this->sanitize_payload( $old_value ) ),
@@ -507,7 +507,7 @@ class Event_Collector {
 				'object_id'   => $plugin,
 				'label'       => sprintf(
 					/* translators: %s: plugin file. */
-					__( 'Activated plugin "%s"', 'ai-agent-monitor' ),
+					__( 'Activated plugin "%s"', 'sharktrace-ai-agent-monitor' ),
 					$plugin
 				),
 			)
@@ -527,7 +527,7 @@ class Event_Collector {
 				'object_id'   => $plugin,
 				'label'       => sprintf(
 					/* translators: %s: plugin file. */
-					__( 'Deactivated plugin "%s"', 'ai-agent-monitor' ),
+					__( 'Deactivated plugin "%s"', 'sharktrace-ai-agent-monitor' ),
 					$plugin
 				),
 			)
@@ -564,7 +564,7 @@ class Event_Collector {
 		 * @param array<string, mixed>|null $event   Event data.
 		 * @param array<string, mixed>      $context Attribution context.
 		 */
-		$event = apply_filters( 'aiam_pre_record_event', $event, $context );
+		$event = apply_filters( 'staiam_pre_record_event', $event, $context );
 
 		if ( ! is_array( $event ) ) {
 			return;
@@ -587,7 +587,7 @@ class Event_Collector {
 		 * @param bool                 $record  Whether to record.
 		 * @param array<string, mixed> $context Attribution context.
 		 */
-		return (bool) apply_filters( 'aiam_should_record', $record, $context );
+		return (bool) apply_filters( 'staiam_should_record', $record, $context );
 	}
 
 	/**
@@ -668,7 +668,7 @@ class Event_Collector {
 	 */
 	private function sanitize_payload( $value, int $depth = 0 ) {
 		if ( $depth > 4 ) {
-			return '…';
+			return 'Ã¢â‚¬Â¦';
 		}
 
 		if ( is_object( $value ) ) {
@@ -715,6 +715,6 @@ class Event_Collector {
 	 * Cap a stored string.
 	 */
 	private function truncate( string $value, int $length = self::MAX_VALUE_LENGTH ): string {
-		return mb_strlen( $value ) > $length ? mb_substr( $value, 0, $length ) . '…' : $value;
+		return mb_strlen( $value ) > $length ? mb_substr( $value, 0, $length ) . 'Ã¢â‚¬Â¦' : $value;
 	}
 }
